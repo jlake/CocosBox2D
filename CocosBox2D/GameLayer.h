@@ -8,6 +8,7 @@
 
 #import "cocos2d.h"
 #import "Box2D.h"
+#import "MyContactListener.h"
 
 @interface GameLayer : CCLayer {
     CGSize winSize;
@@ -24,7 +25,18 @@
     b2Body *paddleBody;
     b2Fixture *paddleFixture;
     
+    b2Vec2 startBallPos;
+    b2Vec2 startPaddlePos;
+    
     b2MouseJoint *mouseJoint;
+    
+    MyContactListener *contactListener;
+
+    BOOL gameOverFlg;
+    ccTime pauseTime;
+    CCLabelTTF *lblGameOver;
+    
+    NSMutableArray *blocks;
 }
 
 + (id)scene;

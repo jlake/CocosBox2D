@@ -41,114 +41,300 @@
     [[CCDirector sharedDirector] replaceScene: [MenuLayer scene]];
 }
 
+- (void) initWorld
+{
+    // Create world
+    b2Vec2 gravity = b2Vec2(0.0f, 0.0f);
+    bool doSleep = true;
+    world = new b2World(gravity, doSleep);
+    
+    // Create edges arround the entire screen
+    b2BodyDef groundBodyDef;
+    groundBodyDef.position.Set(0, 0);
+    
+    groundBody = world->CreateBody(&groundBodyDef);
+    
+    b2PolygonShape groundBox;
+    
+    b2FixtureDef boxShapeDef;
+    boxShapeDef.shape = &groundBox;
+    
+    CGSize box;
+    box.width = winSize.width/PTM_RATIO;
+    box.height = winSize.height/PTM_RATIO;
+    
+    groundBox.SetAsEdge(b2Vec2(0, 0), b2Vec2(box.width, 0));
+    bottomFixture = groundBody->CreateFixture(&boxShapeDef);
+    
+    groundBox.SetAsEdge(b2Vec2(0, 0), b2Vec2(0, box.height));
+    groundBody->CreateFixture(&boxShapeDef);
+    
+    groundBox.SetAsEdge(b2Vec2(0, box.height), b2Vec2(box.width, box.height));
+    groundBody->CreateFixture(&boxShapeDef);
+    
+    groundBox.SetAsEdge(b2Vec2(box.width, box.height), b2Vec2(box.width, 0));
+    groundBody->CreateFixture(&boxShapeDef);
+    
+    startBallPos = b2Vec2(200/PTM_RATIO, 200/PTM_RATIO);
+    startPaddlePos = b2Vec2(winSize.width/2/PTM_RATIO, 50/PTM_RATIO);
+    
+    // Create contact listener
+    contactListener = new MyContactListener();
+    world->SetContactListener(contactListener);
+}
+
+- (void)initBall
+{
+    if(world == NULL) return;
+
+    // Create sprite
+    ball = [CCSprite spriteWithFile:@"Ball.png" rect:CGRectMake(0, 0, 52, 52)];
+    ball.position = ccp(100, 100);
+    ball.tag = 1;
+    [self addChild:ball];
+    
+    // Create ball body and shape
+    b2BodyDef ballBodyDef;
+    ballBodyDef.type = b2_dynamicBody;
+    ballBodyDef.position.Set(startBallPos.x, startPaddlePos.y);
+    ballBodyDef.userData = ball;
+    ballBody = world->CreateBody(&ballBodyDef);
+    
+    // Create circle shape
+    b2CircleShape circle;
+    circle.m_radius = ball.contentSize.width/2/PTM_RATIO;
+    
+    // Create shape definition and add to body
+    b2FixtureDef ballShapeDef;
+    ballShapeDef.shape = &circle;
+    ballShapeDef.density = 1.0f;
+    ballShapeDef.friction = 0.0f;
+    ballShapeDef.restitution = 1.0f;
+    ballFixture = ballBody->CreateFixture(&ballShapeDef);
+    
+    b2Vec2 force = b2Vec2(10, 10);
+    ballBody->ApplyLinearImpulse(force, ballBodyDef.position);
+}
+
+- (void)initPaddle
+{
+    if(world == NULL) return;
+    
+    // Create paddle
+    paddle = [CCSprite spriteWithFile:@"Paddle.png"];
+    paddle.position = ccp(winSize.width/2, 50);
+    [self addChild:paddle];
+    
+    // Create paddle body
+    b2BodyDef paddleBodyDef;
+    paddleBodyDef.type = b2_dynamicBody;
+    paddleBodyDef.position.Set(startPaddlePos.x, startPaddlePos.y);
+    paddleBodyDef.userData = paddle;
+    paddleBody = world->CreateBody(&paddleBodyDef);
+    
+    // Create paddle shape
+    b2PolygonShape paddleShape;
+    paddleShape.SetAsBox(paddle.contentSize.width/2/PTM_RATIO, paddle.contentSize.height/2/PTM_RATIO);
+    
+    // Create shape definition and add to body
+    b2FixtureDef paddleShapeDef;
+    paddleShapeDef.shape = &paddleShape;
+    paddleShapeDef.density = 1.0f;
+    paddleShapeDef.friction = 0.0f;
+    paddleShapeDef.restitution = 1.0f;
+    paddleFixture = paddleBody->CreateFixture(&paddleShapeDef);
+    
+    // Restrict paddle along the x axis
+    b2PrismaticJointDef jointDef;
+    b2Vec2 worldAxis(1.0f, 0.0f);
+    jointDef.collideConnected = true;
+    jointDef.Initialize(paddleBody, groundBody, paddleBody->GetWorldCenter(), worldAxis);
+    world->CreateJoint(&jointDef);
+    
+}
+
+- (void)initBlocks
+{
+    if(world == NULL) return;
+
+    if(blocks != nil) {
+        for (CCSprite *sprite in blocks) {
+            [self removeChild:sprite cleanup:YES];
+        }
+        [blocks removeAllObjects];
+    }
+    
+    int padding = 20;
+    
+    CCSprite *block = [CCSprite spriteWithFile:@"Block.png"];
+    int blockWidth = block.contentSize.width;
+    int blockHeight = block.contentSize.height;
+
+    int x = padding + blockWidth/2;
+    int y = 250;
+
+    for (int i = 0; i<4; i++) {
+        CCSprite *sprite = [CCSprite spriteWithTexture:[block texture]];
+        sprite.position = ccp(x, y);
+        sprite.tag = 2;
+        [self addChild:sprite];
+        x += padding + blockWidth;
+        [blocks addObject:sprite];
+        
+        // Create block body
+        b2BodyDef blockBodyDef;
+        blockBodyDef.type = b2_dynamicBody;
+        blockBodyDef.position.Set(x/PTM_RATIO, y/PTM_RATIO);
+        blockBodyDef.userData = sprite;
+        b2Body *blockBody = world->CreateBody(&blockBodyDef);
+        
+        // Create block shape
+        b2PolygonShape blockShape;
+        blockShape.SetAsBox(blockWidth/2/PTM_RATIO, blockHeight/2/PTM_RATIO);
+        
+        // Create shape definition and add to body
+        b2FixtureDef blockShapeDef;
+        blockShapeDef.shape = &blockShape;
+        blockShapeDef.density = 10.0f;
+        blockShapeDef.friction = 0.0f;
+        blockShapeDef.restitution = 0.1f;
+        blockBody->CreateFixture(&blockShapeDef);
+    }
+}
+
 - (id)init
 {
     if ((self = [super init])) {
         winSize = [CCDirector sharedDirector].winSize;
         [self setupGameMenu];
         
-        // Create world
-        b2Vec2 gravity = b2Vec2(0.0f, 0.0f);
-        bool doSleep = true;
-        world = new b2World(gravity, doSleep);
-        
-        // Create edges arround the entire screen
-        b2BodyDef groundBodyDef;
-        groundBodyDef.position.Set(0, 0);
-        
-        groundBody = world->CreateBody(&groundBodyDef);
-        
-        b2PolygonShape groundBox;
-        
-        b2FixtureDef boxShapeDef;
-        boxShapeDef.shape = &groundBox;
+        [self initWorld];
+        [self initBall];
+        [self initPaddle];
+        [self initBlocks];
 
-        CGSize box;
-        box.width = winSize.width/PTM_RATIO;
-        box.height = winSize.height/PTM_RATIO;
-        
-        groundBox.SetAsEdge(b2Vec2(0, 0), b2Vec2(box.width, 0));
-        groundBody->CreateFixture(&boxShapeDef);
-
-        groundBox.SetAsEdge(b2Vec2(0, 0), b2Vec2(0, box.height));
-        groundBody->CreateFixture(&boxShapeDef);
-
-        groundBox.SetAsEdge(b2Vec2(0, box.height), b2Vec2(box.width, box.height));
-        groundBody->CreateFixture(&boxShapeDef);
-
-        groundBox.SetAsEdge(b2Vec2(box.width, box.height), b2Vec2(box.width, 0));
-        groundBody->CreateFixture(&boxShapeDef);
-        
-        // Create sprite
-        ball = [CCSprite spriteWithFile:@"Ball.png" rect:CGRectMake(0, 0, 52, 52)];
-        ball.position = ccp(100, 100);
-        ball.tag = 1;
-        [self addChild:ball];
-
-        // Create ball body and shape
-        b2BodyDef ballBodyDef;
-        ballBodyDef.type = b2_dynamicBody;
-        ballBodyDef.position.Set(200/PTM_RATIO, 200/PTM_RATIO);
-        ballBodyDef.userData = ball;
-        ballBody = world->CreateBody(&ballBodyDef);
-        
-        // Create circle shape
-        b2CircleShape circle;
-        circle.m_radius = ball.contentSize.width/2/PTM_RATIO;
-        
-        // Create shape definition and add to body
-        b2FixtureDef ballShapeDef;
-        ballShapeDef.shape = &circle;
-        ballShapeDef.density = 1.0f;
-        ballShapeDef.friction = 0.f;
-        ballShapeDef.restitution = 1.0f;
-        ballBody->CreateFixture(&ballShapeDef);
-        
-        // Create paddle
-        paddle = [CCSprite spriteWithFile:@"Paddle.png"];
-        paddle.position = ccp(winSize.width/2, 50);
-        [self addChild:paddle];
-
-        // Create paddle body
-        b2BodyDef paddleBodyDef;
-        paddleBodyDef.type = b2_dynamicBody;
-        paddleBodyDef.position.Set(winSize.width/2/PTM_RATIO, 50/PTM_RATIO);
-        paddleBodyDef.userData = paddle;
-        paddleBody = world->CreateBody(&paddleBodyDef);
-
-        // Create paddle shape
-        b2PolygonShape paddleShape;
-        paddleShape.SetAsBox(paddle.contentSize.width/2/PTM_RATIO, paddle.contentSize.height/2/PTM_RATIO);
-        
-        // Create shape definition and add to body
-        b2FixtureDef paddleShapeDef;
-        paddleShapeDef.shape = &paddleShape;
-        paddleShapeDef.density = 1.0f;
-        paddleShapeDef.friction = 0.f;
-        paddleShapeDef.restitution = 1.0f;
-        paddleFixture = paddleBody->CreateFixture(&paddleShapeDef);
-        
-        b2Vec2 force = b2Vec2(10, 10);
-        ballBody->ApplyLinearImpulse(force, ballBodyDef.position);
+        lblGameOver = [CCLabelTTF labelWithString:@"Game Over!" fontName:@"Verdana" fontSize:48.0];
+        lblGameOver.position = ccp(winSize.width/2, winSize.height/2);
+        lblGameOver.visible = NO;
+        [self addChild:lblGameOver z:10];
 
         [self schedule:@selector(tick:)];
         
         self.isTouchEnabled = YES;
+        
     }
     return self;
 }
 
+- (void)winGame
+{
+    [lblGameOver setString:@"You Win!"];
+    lblGameOver.visible = true;
+    lblGameOver.scale = 0.1;
+    [lblGameOver runAction:[CCScaleTo actionWithDuration:0.5 scale:1.0]];
+    
+    gameOverFlg = true;
+}
+
+- (void)gameOver
+{
+    [lblGameOver setString:@"You Loose :["];
+    lblGameOver.visible = true;
+    lblGameOver.scale = 0.1;
+    [lblGameOver runAction:[CCScaleTo actionWithDuration:0.5 scale:1.0]];
+    
+    gameOverFlg = true;
+}
+
+- (void)resetGame
+{
+    ballBody->SetTransform(startBallPos, 0);
+    paddleBody->SetTransform(startPaddlePos, 0);
+    [self initBlocks];
+    
+    lblGameOver.visible = false;
+    gameOverFlg = false;
+    pauseTime = 0;
+}
+
 - (void)tick:(ccTime)dt
 {
+    if(gameOverFlg) {
+        pauseTime += dt;
+        if (pauseTime > 5.0) {
+            [self resetGame];
+        }
+        return;
+    }
+
+    bool blockFound  = false;
+    
     world->Step(dt, 10, 10);
     for(b2Body *b = world->GetBodyList(); b; b=b->GetNext()) {
         if(b->GetUserData() != NULL) {
-            CCSprite *ballData = (CCSprite *) b->GetUserData();
+            CCSprite *sprite = (CCSprite *) b->GetUserData();
             b2Vec2 pos = b->GetPosition();
-            ballData.position = ccp(pos.x * PTM_RATIO, pos.y * PTM_RATIO);
-            ballData.rotation = -1 * CC_RADIANS_TO_DEGREES(b->GetAngle());
+            sprite.position = ccp(pos.x * PTM_RATIO, pos.y * PTM_RATIO);
+            sprite.rotation = -1 * CC_RADIANS_TO_DEGREES(b->GetAngle());
+            
+            if(sprite.tag == 1) {
+                static int maxSpeed = 10;
+                b2Vec2 velocity = b->GetLinearVelocity();
+                float32 speed = velocity.Length();
+                if(speed > maxSpeed) {
+                    b->SetLinearDamping(0.5);
+                } else if(speed < maxSpeed) {
+                    b->SetLinearDamping(0.0);
+                }
+            }if(sprite.tag == 2) {
+                blockFound = true;
+            }
         }
+    }
+    
+    /*
+    if(!blockFound) {
+        [self winGame];
+        return;
+    }*/
 
+    std::vector<b2Body *>toDestroy;
+    std::vector<MyContact>::iterator pos;
+    for (pos = contactListener->_contacts.begin(); pos != contactListener->_contacts.end(); ++pos) {
+        MyContact contact = *pos;
+        //NSLog(@"MyContact fixtureA: %@  fixtureB: %@", contact.fixtureA, contact.fixtureB);
+        
+        if((contact.fixtureA == bottomFixture && contact.fixtureB == ballFixture)
+           || (contact.fixtureA == ballFixture && contact.fixtureB == bottomFixture)) {
+            NSLog(@"Ball hit bottom!");
+            [self gameOver];
+        }
+        
+        b2Body *bodyA = contact.fixtureA->GetBody();
+        b2Body *bodyB = contact.fixtureB->GetBody();
+        void *dataA = bodyA->GetUserData();
+        void *dataB = bodyB->GetUserData();
+        if(dataA != NULL && dataB != NULL) {
+            CCSprite *spriteA = (CCSprite *) dataA;
+            CCSprite *spriteB = (CCSprite *) dataB;
+            
+            if((spriteA.tag == 1 && spriteB.tag == 2) || (spriteA.tag == 2 && spriteB.tag == 1)) {
+                b2Body *body = (spriteA.tag == 2) ? bodyA : bodyB;
+                if(std::find(toDestroy.begin(), toDestroy.end(), body) == toDestroy.end()) {
+                    toDestroy.push_back(body);
+                }
+            }
+        }
+    }
+    
+    std::vector<b2Body *>::iterator pos2;
+    for (pos2 = toDestroy.begin(); pos2 != toDestroy.end(); ++pos2) {
+        b2Body *body = *pos2;
+        void *userData = body->GetUserData();
+        if(userData != NULL) {
+            [self removeChild:(CCSprite *)userData cleanup:YES];
+        }
+        world->DestroyBody(body);
     }
 }
 
@@ -213,6 +399,11 @@
     
     ball = NULL;
     ballBody = NULL;
+    
+    delete contactListener;
+    
+    [blocks release];
+    blocks = nil;
 
     [super dealloc];
 }
