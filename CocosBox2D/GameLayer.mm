@@ -230,6 +230,9 @@
         winSize = [CCDirector sharedDirector].winSize;
         [self setupGameMenu];
         
+        [[SimpleAudioEngine sharedEngine] preloadEffect:@"explode.wav"];
+        [[SimpleAudioEngine sharedEngine] playBackgroundMusic:@"background-music.caf"];
+        
         [self initWorld];
         [self initBall];
         [self initPaddle];
@@ -243,8 +246,6 @@
         [self schedule:@selector(tick:)];
         
         self.isTouchEnabled = YES;
-        
-        [[SimpleAudioEngine sharedEngine] playBackgroundMusic:@"background-music.caf"];
     }
     return self;
 }
@@ -433,9 +434,9 @@
     world = NULL;
     groundBody = NULL;
     bottomFixture = NULL;
-    ballFixture = NULL;
-    
+
     ballBody = NULL;
+    ballFixture = NULL;
 
     paddleBody = NULL;
     paddleFixture = NULL;

@@ -113,11 +113,12 @@
 {
     world->Step(dt, 10, 10);
     for(b2Body *b = world->GetBodyList(); b; b=b->GetNext()) {
-        if(b->GetUserData() != NULL) {
-            CCSprite *ballData = (CCSprite *) b->GetUserData();
+        void *userData = b->GetUserData();
+        if(userData != NULL) {
+            CCSprite *sprite = (CCSprite *) userData;
             b2Vec2 pos = b->GetPosition();
-            ballData.position = ccp(pos.x * PTM_RATIO, pos.y * PTM_RATIO);
-            ballData.rotation = -1 * CC_RADIANS_TO_DEGREES(b->GetAngle());
+            sprite.position = ccp(pos.x * PTM_RATIO, pos.y * PTM_RATIO);
+            sprite.rotation = -1 * CC_RADIANS_TO_DEGREES(b->GetAngle());
         }
         
     }
@@ -125,15 +126,14 @@
 
 - (void)accelerometer:(UIAccelerometer *)accelerometer didAccelerate:(UIAcceleration *)acceleration
 {
-    NSLog(@"accelerometer");
     b2Vec2 gravity(-acceleration.y * 15, acceleration.x * 15);
     world->SetGravity(gravity);
 }
 
 - (void)dealloc {
     delete world;
-    body = NULL;
     world = NULL;
+    body = NULL;
     
     [super dealloc];
 }

@@ -169,6 +169,10 @@
 		8C8FD3FE1383630900EE3271 /* blip.caf in Resources */ = {isa = PBXBuildFile; fileRef = 8C8FD3FC1383630900EE3271 /* blip.caf */; };
 		8C8FD4101383666500EE3271 /* explode.wav in Resources */ = {isa = PBXBuildFile; fileRef = 8C8FD40F1383666500EE3271 /* explode.wav */; };
 		8C8FD412138366C600EE3271 /* fire.png in Resources */ = {isa = PBXBuildFile; fileRef = 8C8FD411138366C600EE3271 /* fire.png */; };
+		8C8FD41913838BA700EE3271 /* CollisionTestLayer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8C8FD41813838BA700EE3271 /* CollisionTestLayer.mm */; };
+		8C8FD4551383A9C000EE3271 /* ccsprites.plist in Resources */ = {isa = PBXBuildFile; fileRef = 8C8FD4531383A9C000EE3271 /* ccsprites.plist */; };
+		8C8FD4561383A9C000EE3271 /* ccsprites.png in Resources */ = {isa = PBXBuildFile; fileRef = 8C8FD4541383A9C000EE3271 /* ccsprites.png */; };
+		8C8FD6501383AC2F00EE3271 /* hahaha.caf in Resources */ = {isa = PBXBuildFile; fileRef = 8C8FD64F1383AC2F00EE3271 /* hahaha.caf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -496,6 +500,11 @@
 		8C8FD3FC1383630900EE3271 /* blip.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = blip.caf; sourceTree = "<group>"; };
 		8C8FD40F1383666500EE3271 /* explode.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = explode.wav; sourceTree = "<group>"; };
 		8C8FD411138366C600EE3271 /* fire.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = fire.png; sourceTree = "<group>"; };
+		8C8FD41713838BA700EE3271 /* CollisionTestLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CollisionTestLayer.h; sourceTree = "<group>"; };
+		8C8FD41813838BA700EE3271 /* CollisionTestLayer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CollisionTestLayer.mm; sourceTree = "<group>"; };
+		8C8FD4531383A9C000EE3271 /* ccsprites.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = ccsprites.plist; sourceTree = "<group>"; };
+		8C8FD4541383A9C000EE3271 /* ccsprites.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ccsprites.png; sourceTree = "<group>"; };
+		8C8FD64F1383AC2F00EE3271 /* hahaha.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = hahaha.caf; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -570,6 +579,8 @@
 				8C54AD631382480C00E4A876 /* BallLayer.mm */,
 				8C560D6A13826F50005DA09D /* MyContactListener.h */,
 				8C560D6B13826F50005DA09D /* MyContactListener.mm */,
+				8C8FD41713838BA700EE3271 /* CollisionTestLayer.h */,
+				8C8FD41813838BA700EE3271 /* CollisionTestLayer.mm */,
 			);
 			path = CocosBox2D;
 			sourceTree = "<group>";
@@ -577,10 +588,13 @@
 		8C54AB8213822E5B00E4A876 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				8C8FD4531383A9C000EE3271 /* ccsprites.plist */,
+				8C8FD4541383A9C000EE3271 /* ccsprites.png */,
 				8C8FD411138366C600EE3271 /* fire.png */,
 				8C8FD40F1383666500EE3271 /* explode.wav */,
 				8C8FD3FB1383630900EE3271 /* background-music.caf */,
 				8C8FD3FC1383630900EE3271 /* blip.caf */,
+				8C8FD64F1383AC2F00EE3271 /* hahaha.caf */,
 				8C8FD3E9138355D000EE3271 /* Ball.png */,
 				8C560D6713826EAD005DA09D /* Block.png */,
 				8C54AD72138254EF00E4A876 /* Paddle.png */,
@@ -1103,6 +1117,9 @@
 				8C8FD3FE1383630900EE3271 /* blip.caf in Resources */,
 				8C8FD4101383666500EE3271 /* explode.wav in Resources */,
 				8C8FD412138366C600EE3271 /* fire.png in Resources */,
+				8C8FD4551383A9C000EE3271 /* ccsprites.plist in Resources */,
+				8C8FD4561383A9C000EE3271 /* ccsprites.png in Resources */,
+				8C8FD6501383AC2F00EE3271 /* hahaha.caf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1250,6 +1267,7 @@
 				8C54AD641382480D00E4A876 /* BallLayer.mm in Sources */,
 				8C54AD67138249E900E4A876 /* MenuLayer.mm in Sources */,
 				8C560D6C13826F50005DA09D /* MyContactListener.mm in Sources */,
+				8C8FD41913838BA700EE3271 /* CollisionTestLayer.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

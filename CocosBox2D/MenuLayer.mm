@@ -9,6 +9,7 @@
 #import "MenuLayer.h"
 #import "BallLayer.h"
 #import "GameLayer.h"
+#import "CollisionTestLayer.h"
 
 @implementation MenuLayer
 
@@ -30,17 +31,25 @@
 
 -(void)setupMainMenu
 {
-    CCLabelTTF *label1 = [CCLabelTTF labelWithString:@"Bounce Ball" fontName:@"Marker Felt" fontSize:32];
+    NSString *menuFont = @"Marker Felt";
+    
+    CCLabelTTF *label1 = [CCLabelTTF labelWithString:@"Bounce Ball" fontName:menuFont fontSize:32];
 	CCMenuItemImage * menuItem1 = [CCMenuItemLabel itemWithLabel:label1
                                                           target:self
                                                         selector:@selector(loadBallScene:)]; 
     
-    CCLabelTTF *label2 = [CCLabelTTF labelWithString:@"Brakeout Game" fontName:@"Marker Felt" fontSize:32];
+    CCLabelTTF *label2 = [CCLabelTTF labelWithString:@"Collision Test" fontName:menuFont fontSize:32];
 	CCMenuItemImage * menuItem2 = [CCMenuItemLabel itemWithLabel:label2
                                                           target:self
-                                                        selector:@selector(loadGameScene:)]; 
+                                                        selector:@selector(loadCollisionTest:)];
     
-	CCMenu * myMenu = [CCMenu menuWithItems:menuItem1, menuItem2, nil];
+    CCLabelTTF *label3 = [CCLabelTTF labelWithString:@"Breakout Game" fontName:menuFont fontSize:32];
+	CCMenuItemImage * menuItem3 = [CCMenuItemLabel itemWithLabel:label3
+                                                          target:self
+                                                        selector:@selector(loadBreakoutGame:)]; 
+
+    
+	CCMenu * myMenu = [CCMenu menuWithItems:menuItem1, menuItem2, menuItem3, nil];
     
 	[myMenu alignItemsVertically];
     
@@ -52,7 +61,12 @@
 	[[CCDirector sharedDirector] replaceScene: [BallLayer scene]];
 }
 
-- (void) loadGameScene: (CCMenuItem  *) menuItem 
+- (void) loadCollisionTest: (CCMenuItem  *) menuItem 
+{
+	[[CCDirector sharedDirector] replaceScene: [CollisionTestLayer scene]];
+}
+
+- (void) loadBreakoutGame: (CCMenuItem  *) menuItem 
 {
 	[[CCDirector sharedDirector] replaceScene: [GameLayer scene]];
 }
