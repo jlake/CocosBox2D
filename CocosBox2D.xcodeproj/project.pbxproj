@@ -165,6 +165,10 @@
 		8C560D6813826EAD005DA09D /* Block.png in Resources */ = {isa = PBXBuildFile; fileRef = 8C560D6713826EAD005DA09D /* Block.png */; };
 		8C560D6C13826F50005DA09D /* MyContactListener.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8C560D6B13826F50005DA09D /* MyContactListener.mm */; };
 		8C8FD3EA138355D000EE3271 /* Ball.png in Resources */ = {isa = PBXBuildFile; fileRef = 8C8FD3E9138355D000EE3271 /* Ball.png */; };
+		8C8FD3FD1383630900EE3271 /* background-music.caf in Resources */ = {isa = PBXBuildFile; fileRef = 8C8FD3FB1383630900EE3271 /* background-music.caf */; };
+		8C8FD3FE1383630900EE3271 /* blip.caf in Resources */ = {isa = PBXBuildFile; fileRef = 8C8FD3FC1383630900EE3271 /* blip.caf */; };
+		8C8FD4101383666500EE3271 /* explode.wav in Resources */ = {isa = PBXBuildFile; fileRef = 8C8FD40F1383666500EE3271 /* explode.wav */; };
+		8C8FD412138366C600EE3271 /* fire.png in Resources */ = {isa = PBXBuildFile; fileRef = 8C8FD411138366C600EE3271 /* fire.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -488,6 +492,10 @@
 		8C560D6A13826F50005DA09D /* MyContactListener.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MyContactListener.h; path = ../../../../MyContactListener.h; sourceTree = "<group>"; };
 		8C560D6B13826F50005DA09D /* MyContactListener.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = MyContactListener.mm; path = ../../../../MyContactListener.mm; sourceTree = "<group>"; };
 		8C8FD3E9138355D000EE3271 /* Ball.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Ball.png; sourceTree = "<group>"; };
+		8C8FD3FB1383630900EE3271 /* background-music.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "background-music.caf"; sourceTree = "<group>"; };
+		8C8FD3FC1383630900EE3271 /* blip.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = blip.caf; sourceTree = "<group>"; };
+		8C8FD40F1383666500EE3271 /* explode.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = explode.wav; sourceTree = "<group>"; };
+		8C8FD411138366C600EE3271 /* fire.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = fire.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -569,6 +577,10 @@
 		8C54AB8213822E5B00E4A876 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				8C8FD411138366C600EE3271 /* fire.png */,
+				8C8FD40F1383666500EE3271 /* explode.wav */,
+				8C8FD3FB1383630900EE3271 /* background-music.caf */,
+				8C8FD3FC1383630900EE3271 /* blip.caf */,
 				8C8FD3E9138355D000EE3271 /* Ball.png */,
 				8C560D6713826EAD005DA09D /* Block.png */,
 				8C54AD72138254EF00E4A876 /* Paddle.png */,
@@ -1087,6 +1099,10 @@
 				8C54AD73138254EF00E4A876 /* Paddle.png in Resources */,
 				8C560D6813826EAD005DA09D /* Block.png in Resources */,
 				8C8FD3EA138355D000EE3271 /* Ball.png in Resources */,
+				8C8FD3FD1383630900EE3271 /* background-music.caf in Resources */,
+				8C8FD3FE1383630900EE3271 /* blip.caf in Resources */,
+				8C8FD4101383666500EE3271 /* explode.wav in Resources */,
+				8C8FD412138366C600EE3271 /* fire.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

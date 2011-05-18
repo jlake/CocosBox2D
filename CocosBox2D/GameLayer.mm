@@ -8,8 +8,12 @@
 
 #import "GameLayer.h"
 #import "MenuLayer.h"
+#import "SimpleAudioEngine.h"
 
 #define PTM_RATIO 32.0
+#define TAG_BALL 1
+#define TAG_BLOCK 2
+#define TAG_PADDLE 3
 
 @implementation GameLayer
 
@@ -98,7 +102,7 @@
     // Create sprite
     ball = [CCSprite spriteWithFile:@"Ball.png" rect:CGRectMake(0, 0, 52, 52)];
     ball.position = ccp(100, 100);
-    ball.tag = 1;
+    ball.tag = TAG_BALL;
     [self addChild:ball];
     
     // Create ball body and shape
@@ -135,6 +139,7 @@
     // Create paddle
     paddle = [CCSprite spriteWithFile:@"Paddle.png"];
     paddle.position = ccp(winSize.width/2, 50);
+    paddle.tag = TAG_PADDLE;
     [self addChild:paddle];
     
     // Create paddle body
@@ -180,24 +185,20 @@
         [blocks removeAllObjects];
     }
     
-    int padding = 0;
     
     CCSprite *block = [CCSprite spriteWithFile:@"Block.png"];
     int blockWidth = block.contentSize.width;
     int blockHeight = block.contentSize.height;
 
-    //int x = padding + blockWidth/2;
-    int x = 0;
+    int xOffset = 5;
+    int x = xOffset + blockWidth/2;
     int y = 250;
-
     for (int i = 0; i<4; i++) {
         CCSprite *sprite = [CCSprite spriteWithTexture:[block texture]];
         sprite.position = ccp(x, y);
-        sprite.tag = 2;
+        sprite.tag = TAG_BLOCK;
         [self addChild:sprite];
         [blocks addObject:sprite];
-
-        x += padding + blockWidth;
         
         // Create block body
         b2BodyDef blockBodyDef;
@@ -217,6 +218,8 @@
         blockShapeDef.friction = 0.0f;
         blockShapeDef.restitution = 0.1f;
         blockBody->CreateFixture(&blockShapeDef);
+        
+        x += xOffset + blockWidth;
     }
     
 }
@@ -241,6 +244,7 @@
         
         self.isTouchEnabled = YES;
         
+        [[SimpleAudioEngine sharedEngine] playBackgroundMusic:@"background-music.caf"];
     }
     return self;
 }
@@ -291,13 +295,14 @@
     
     world->Step(dt, 10, 10);
     for(b2Body *b = world->GetBodyList(); b; b=b->GetNext()) {
-        if(b->GetUserData() != NULL) {
-            CCSprite *sprite = (CCSprite *) b->GetUserData();
+        void *userData = b->GetUserData();
+        if(userData != NULL) {
+            CCSprite *sprite = (CCSprite *) userData;
             b2Vec2 pos = b->GetPosition();
             sprite.position = ccp(pos.x * PTM_RATIO, pos.y * PTM_RATIO);
             sprite.rotation = -1 * CC_RADIANS_TO_DEGREES(b->GetAngle());
             
-            if(sprite.tag == 1) {
+            if(sprite.tag == TAG_BALL) {
                 static int maxSpeed = 10;
                 b2Vec2 velocity = b->GetLinearVelocity();
                 float32 speed = velocity.Length();
@@ -306,17 +311,16 @@
                 } else if(speed < maxSpeed) {
                     b->SetLinearDamping(0.0);
                 }
-            }if(sprite.tag == 2) {
+            } else if(sprite.tag == TAG_BLOCK) {
                 blockFound = true;
             }
         }
     }
     
-    /*
     if(!blockFound) {
         [self winGame];
         return;
-    }*/
+    }
 
     std::vector<b2Body *>toDestroy;
     std::vector<MyContact>::iterator pos;
@@ -338,23 +342,37 @@
             CCSprite *spriteA = (CCSprite *) dataA;
             CCSprite *spriteB = (CCSprite *) dataB;
             
-            if((spriteA.tag == 1 && spriteB.tag == 2) || (spriteA.tag == 2 && spriteB.tag == 1)) {
-                b2Body *body = (spriteA.tag == 2) ? bodyA : bodyB;
-                if(std::find(toDestroy.begin(), toDestroy.end(), body) == toDestroy.end()) {
-                    toDestroy.push_back(body);
+            if((spriteA.tag == TAG_BALL && spriteB.tag == TAG_BLOCK)
+               || (spriteA.tag == TAG_BLOCK && spriteB.tag == TAG_BALL)) {
+                b2Body *blockBody = (spriteA.tag == TAG_BLOCK) ? bodyA : bodyB;
+                if(std::find(toDestroy.begin(), toDestroy.end(), blockBody) == toDestroy.end()) {
+                    toDestroy.push_back(blockBody);
                 }
             }
         }
     }
     
-    std::vector<b2Body *>::iterator pos2;
-    for (pos2 = toDestroy.begin(); pos2 != toDestroy.end(); ++pos2) {
-        b2Body *body = *pos2;
-        void *userData = body->GetUserData();
-        if(userData != NULL) {
-            [self removeChild:(CCSprite *)userData cleanup:YES];
+    if(toDestroy.size() > 0) {
+        [[SimpleAudioEngine sharedEngine] playEffect:@"explode.wav"];
+        //[[SimpleAudioEngine sharedEngine] playEffect:@"blip.caf"];
+        std::vector<b2Body *>::iterator pos2;
+        for (pos2 = toDestroy.begin(); pos2 != toDestroy.end(); ++pos2) {
+            b2Body *body = *pos2;
+            void *userData = body->GetUserData();
+            if(userData != NULL) {
+                CCSprite *block = (CCSprite *)userData;
+                [self removeChild:(CCSprite *)block cleanup:YES];
+                CCParticleSystem * emitter = [CCParticleExplosion node];
+                emitter.position = [block position];
+                emitter.life = 0.1f;
+                emitter.duration = 0.1f;
+                emitter.lifeVar = 0.1f;
+                emitter.totalParticles = 100;
+                
+                [self addChild:emitter];
+            }
+            world->DestroyBody(body);
         }
-        world->DestroyBody(body);
     }
 }
 
