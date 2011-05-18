@@ -159,12 +159,12 @@
 		8C54AD5113822E5F00E4A876 /* GLES-Render.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8C54AD5013822E5F00E4A876 /* GLES-Render.mm */; };
 		8C54AD5413822E5F00E4A876 /* blocks.png in Resources */ = {isa = PBXBuildFile; fileRef = 8C54AD5313822E5F00E4A876 /* blocks.png */; };
 		8C54AD5C13822F2100E4A876 /* GameLayer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8C54AD5B13822F2100E4A876 /* GameLayer.mm */; };
-		8C54AD5E1382354E00E4A876 /* Ball.png in Resources */ = {isa = PBXBuildFile; fileRef = 8C54AD5D1382354E00E4A876 /* Ball.png */; };
 		8C54AD641382480D00E4A876 /* BallLayer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8C54AD631382480C00E4A876 /* BallLayer.mm */; };
 		8C54AD67138249E900E4A876 /* MenuLayer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8C54AD66138249E900E4A876 /* MenuLayer.mm */; };
 		8C54AD73138254EF00E4A876 /* Paddle.png in Resources */ = {isa = PBXBuildFile; fileRef = 8C54AD72138254EF00E4A876 /* Paddle.png */; };
 		8C560D6813826EAD005DA09D /* Block.png in Resources */ = {isa = PBXBuildFile; fileRef = 8C560D6713826EAD005DA09D /* Block.png */; };
 		8C560D6C13826F50005DA09D /* MyContactListener.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8C560D6B13826F50005DA09D /* MyContactListener.mm */; };
+		8C8FD3EA138355D000EE3271 /* Ball.png in Resources */ = {isa = PBXBuildFile; fileRef = 8C8FD3E9138355D000EE3271 /* Ball.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -479,7 +479,6 @@
 		8C54AD5313822E5F00E4A876 /* blocks.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = blocks.png; path = Resources/blocks.png; sourceTree = "<group>"; };
 		8C54AD5A13822F2000E4A876 /* GameLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameLayer.h; sourceTree = "<group>"; };
 		8C54AD5B13822F2100E4A876 /* GameLayer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = GameLayer.mm; sourceTree = "<group>"; };
-		8C54AD5D1382354E00E4A876 /* Ball.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Ball.png; sourceTree = "<group>"; };
 		8C54AD621382480C00E4A876 /* BallLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BallLayer.h; sourceTree = "<group>"; };
 		8C54AD631382480C00E4A876 /* BallLayer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = BallLayer.mm; sourceTree = "<group>"; };
 		8C54AD65138249E800E4A876 /* MenuLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenuLayer.h; sourceTree = "<group>"; };
@@ -488,6 +487,7 @@
 		8C560D6713826EAD005DA09D /* Block.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Block.png; sourceTree = "<group>"; };
 		8C560D6A13826F50005DA09D /* MyContactListener.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MyContactListener.h; path = ../../../../MyContactListener.h; sourceTree = "<group>"; };
 		8C560D6B13826F50005DA09D /* MyContactListener.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = MyContactListener.mm; path = ../../../../MyContactListener.mm; sourceTree = "<group>"; };
+		8C8FD3E9138355D000EE3271 /* Ball.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Ball.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -569,9 +569,9 @@
 		8C54AB8213822E5B00E4A876 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				8C8FD3E9138355D000EE3271 /* Ball.png */,
 				8C560D6713826EAD005DA09D /* Block.png */,
 				8C54AD72138254EF00E4A876 /* Paddle.png */,
-				8C54AD5D1382354E00E4A876 /* Ball.png */,
 				8C54AB8313822E5B00E4A876 /* Default.png */,
 				8C54AB8513822E5B00E4A876 /* fps_images.png */,
 				8C54AB8713822E5B00E4A876 /* Icon-72.png */,
@@ -1084,9 +1084,9 @@
 				8C54AB9213822E5B00E4A876 /* Icon@2x.png in Resources */,
 				8C54AB9513822E5B00E4A876 /* iTunesArtwork in Resources */,
 				8C54AD5413822E5F00E4A876 /* blocks.png in Resources */,
-				8C54AD5E1382354E00E4A876 /* Ball.png in Resources */,
 				8C54AD73138254EF00E4A876 /* Paddle.png in Resources */,
 				8C560D6813826EAD005DA09D /* Block.png in Resources */,
+				8C8FD3EA138355D000EE3271 /* Ball.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

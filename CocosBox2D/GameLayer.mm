@@ -43,6 +43,10 @@
 
 - (void) initWorld
 {
+    if(world != NULL) {
+        delete world;
+    }
+
     // Create world
     b2Vec2 gravity = b2Vec2(0.0f, 0.0f);
     bool doSleep = true;
@@ -75,7 +79,7 @@
     groundBox.SetAsEdge(b2Vec2(box.width, box.height), b2Vec2(box.width, 0));
     groundBody->CreateFixture(&boxShapeDef);
     
-    startBallPos = b2Vec2(200/PTM_RATIO, 200/PTM_RATIO);
+    startBallPos = b2Vec2(100/PTM_RATIO, 100/PTM_RATIO);
     startPaddlePos = b2Vec2(winSize.width/2/PTM_RATIO, 50/PTM_RATIO);
     
     // Create contact listener
@@ -86,6 +90,10 @@
 - (void)initBall
 {
     if(world == NULL) return;
+
+    if(ball != nil) {
+        [self removeChild:ball cleanup:YES];
+    }
 
     // Create sprite
     ball = [CCSprite spriteWithFile:@"Ball.png" rect:CGRectMake(0, 0, 52, 52)];
@@ -119,7 +127,11 @@
 - (void)initPaddle
 {
     if(world == NULL) return;
-    
+
+    if(paddle != nil) {
+        [self removeChild:paddle cleanup:YES];
+    }
+
     // Create paddle
     paddle = [CCSprite spriteWithFile:@"Paddle.png"];
     paddle.position = ccp(winSize.width/2, 50);
@@ -157,20 +169,25 @@
 {
     if(world == NULL) return;
 
-    if(blocks != nil) {
+    //NSLog(@"blocks count:%d", [blocks count]);
+    if(blocks == nil) {
+        blocks = [[NSMutableArray alloc] init];
+    } else {
         for (CCSprite *sprite in blocks) {
             [self removeChild:sprite cleanup:YES];
         }
+        
         [blocks removeAllObjects];
     }
     
-    int padding = 20;
+    int padding = 0;
     
     CCSprite *block = [CCSprite spriteWithFile:@"Block.png"];
     int blockWidth = block.contentSize.width;
     int blockHeight = block.contentSize.height;
 
-    int x = padding + blockWidth/2;
+    //int x = padding + blockWidth/2;
+    int x = 0;
     int y = 250;
 
     for (int i = 0; i<4; i++) {
@@ -178,8 +195,9 @@
         sprite.position = ccp(x, y);
         sprite.tag = 2;
         [self addChild:sprite];
-        x += padding + blockWidth;
         [blocks addObject:sprite];
+
+        x += padding + blockWidth;
         
         // Create block body
         b2BodyDef blockBodyDef;
@@ -200,6 +218,7 @@
         blockShapeDef.restitution = 0.1f;
         blockBody->CreateFixture(&blockShapeDef);
     }
+    
 }
 
 - (id)init
@@ -213,7 +232,7 @@
         [self initPaddle];
         [self initBlocks];
 
-        lblGameOver = [CCLabelTTF labelWithString:@"Game Over!" fontName:@"Verdana" fontSize:48.0];
+        lblGameOver = [CCLabelTTF labelWithString:@"" fontName:@"Verdana" fontSize:48.0];
         lblGameOver.position = ccp(winSize.width/2, winSize.height/2);
         lblGameOver.visible = NO;
         [self addChild:lblGameOver z:10];
@@ -248,8 +267,9 @@
 
 - (void)resetGame
 {
-    ballBody->SetTransform(startBallPos, 0);
-    paddleBody->SetTransform(startPaddlePos, 0);
+    [self initWorld];
+    [self initBall];
+    [self initPaddle];
     [self initBlocks];
     
     lblGameOver.visible = false;
@@ -397,9 +417,12 @@
     bottomFixture = NULL;
     ballFixture = NULL;
     
-    ball = NULL;
     ballBody = NULL;
+
+    paddleBody = NULL;
+    paddleFixture = NULL;
     
+    delete mouseJoint;
     delete contactListener;
     
     [blocks release];
