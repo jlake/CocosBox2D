@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		8C0509791384EE2400B99057 /* MyContactListener.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8C0509781384EE2400B99057 /* MyContactListener.mm */; };
 		8C54AB7213822E5A00E4A876 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8C54AB7113822E5A00E4A876 /* QuartzCore.framework */; };
 		8C54AB7413822E5A00E4A876 /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8C54AB7313822E5A00E4A876 /* OpenGLES.framework */; };
 		8C54AB7613822E5A00E4A876 /* OpenAL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8C54AB7513822E5A00E4A876 /* OpenAL.framework */; };
@@ -163,7 +164,6 @@
 		8C54AD67138249E900E4A876 /* MenuLayer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8C54AD66138249E900E4A876 /* MenuLayer.mm */; };
 		8C54AD73138254EF00E4A876 /* Paddle.png in Resources */ = {isa = PBXBuildFile; fileRef = 8C54AD72138254EF00E4A876 /* Paddle.png */; };
 		8C560D6813826EAD005DA09D /* Block.png in Resources */ = {isa = PBXBuildFile; fileRef = 8C560D6713826EAD005DA09D /* Block.png */; };
-		8C560D6C13826F50005DA09D /* MyContactListener.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8C560D6B13826F50005DA09D /* MyContactListener.mm */; };
 		8C8FD3EA138355D000EE3271 /* Ball.png in Resources */ = {isa = PBXBuildFile; fileRef = 8C8FD3E9138355D000EE3271 /* Ball.png */; };
 		8C8FD3FD1383630900EE3271 /* background-music.caf in Resources */ = {isa = PBXBuildFile; fileRef = 8C8FD3FB1383630900EE3271 /* background-music.caf */; };
 		8C8FD3FE1383630900EE3271 /* blip.caf in Resources */ = {isa = PBXBuildFile; fileRef = 8C8FD3FC1383630900EE3271 /* blip.caf */; };
@@ -176,6 +176,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		8C0509771384EE2400B99057 /* MyContactListener.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyContactListener.h; sourceTree = "<group>"; };
+		8C0509781384EE2400B99057 /* MyContactListener.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = MyContactListener.mm; sourceTree = "<group>"; };
 		8C54AB6D13822E5A00E4A876 /* CocosBox2D.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CocosBox2D.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8C54AB7113822E5A00E4A876 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		8C54AB7313822E5A00E4A876 /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
@@ -493,8 +495,6 @@
 		8C54AD66138249E900E4A876 /* MenuLayer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = MenuLayer.mm; sourceTree = "<group>"; };
 		8C54AD72138254EF00E4A876 /* Paddle.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Paddle.png; sourceTree = "<group>"; };
 		8C560D6713826EAD005DA09D /* Block.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Block.png; sourceTree = "<group>"; };
-		8C560D6A13826F50005DA09D /* MyContactListener.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MyContactListener.h; path = ../../../../MyContactListener.h; sourceTree = "<group>"; };
-		8C560D6B13826F50005DA09D /* MyContactListener.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = MyContactListener.mm; path = ../../../../MyContactListener.mm; sourceTree = "<group>"; };
 		8C8FD3E9138355D000EE3271 /* Ball.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Ball.png; sourceTree = "<group>"; };
 		8C8FD3FB1383630900EE3271 /* background-music.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "background-music.caf"; sourceTree = "<group>"; };
 		8C8FD3FC1383630900EE3271 /* blip.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = blip.caf; sourceTree = "<group>"; };
@@ -561,6 +561,8 @@
 		8C54AB8113822E5B00E4A876 /* CocosBox2D */ = {
 			isa = PBXGroup;
 			children = (
+				8C0509771384EE2400B99057 /* MyContactListener.h */,
+				8C0509781384EE2400B99057 /* MyContactListener.mm */,
 				8C54AD65138249E800E4A876 /* MenuLayer.h */,
 				8C54AD66138249E900E4A876 /* MenuLayer.mm */,
 				8C54AD4613822E5F00E4A876 /* AppDelegate.h */,
@@ -577,8 +579,6 @@
 				8C54AD5B13822F2100E4A876 /* GameLayer.mm */,
 				8C54AD621382480C00E4A876 /* BallLayer.h */,
 				8C54AD631382480C00E4A876 /* BallLayer.mm */,
-				8C560D6A13826F50005DA09D /* MyContactListener.h */,
-				8C560D6B13826F50005DA09D /* MyContactListener.mm */,
 				8C8FD41713838BA700EE3271 /* CollisionTestLayer.h */,
 				8C8FD41813838BA700EE3271 /* CollisionTestLayer.mm */,
 			);
@@ -1266,8 +1266,8 @@
 				8C54AD5C13822F2100E4A876 /* GameLayer.mm in Sources */,
 				8C54AD641382480D00E4A876 /* BallLayer.mm in Sources */,
 				8C54AD67138249E900E4A876 /* MenuLayer.mm in Sources */,
-				8C560D6C13826F50005DA09D /* MyContactListener.mm in Sources */,
 				8C8FD41913838BA700EE3271 /* CollisionTestLayer.mm in Sources */,
+				8C0509791384EE2400B99057 /* MyContactListener.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
